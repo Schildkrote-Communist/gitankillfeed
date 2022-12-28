@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Rocket.Core.Plugins;
 using Rocket.Unturned.Events;
 using Rocket.Unturned.Player;
@@ -68,8 +68,8 @@ namespace gitankillfeed
                     EffectManager.sendUIEffectText(263, transportCon, true, $"victim{id - 1}", "");
                     EffectManager.sendUIEffectVisibility(263, transportCon, true, $"kill{id - 1}", false);
                 }
-                liste[id - 1] = 0;
             }
+            liste[id - 1] = 0;
         }
         private void tellPlayer(UnturnedPlayer player, EDeathCause cause, ELimb limb, Steamworks.CSteamID murderer)
         {
@@ -80,10 +80,11 @@ namespace gitankillfeed
                 nombreUi = 1;
             }
             int FreeId = liste.FindIndex(x => x == 0) + 1;
+            Rocket.Core.Logging.Logger.Log("FreeId : " + FreeId.ToString());
             liste[FreeId - 1] = 1;
             foreach (var transportCon in Provider.EnumerateClients())
             {
-                if (nombreUi == 1)
+                if (FreeId == 1)
                 {
                     EffectManager.sendUIEffectText(263, transportCon, true, "murderer", murdererPlayer.CharacterName.ToString());
                     EffectManager.sendUIEffectText(263, transportCon, true, "body", limb.ToString());
