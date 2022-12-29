@@ -32,7 +32,7 @@ namespace gitankillfeed
         }
         private void giveUI(UnturnedPlayer player)
         {
-            EffectManager.sendUIEffect(32045, 263, player.SteamPlayer().transportConnection, true);
+            EffectManager.sendUIEffect(32045, 843, player.SteamPlayer().transportConnection, true);
         }
 
         private IEnumerator HideUIDelayed(int id)
@@ -52,21 +52,21 @@ namespace gitankillfeed
             {
                 if (nombreUi == 0 & liste.Exists(x => x == 1) == false)
                 {
-                    EffectManager.sendUIEffectVisibility(263, transportCon, true, "text", false);
+                    EffectManager.sendUIEffectVisibility(843, transportCon, true, "text", false);
                 }
                 else if (id - 1 == 0)
                 {
-                    EffectManager.sendUIEffectText(263, transportCon, true, "murderer", "");
-                    EffectManager.sendUIEffectText(263, transportCon, true, "body", "");
-                    EffectManager.sendUIEffectText(263, transportCon, true, "victim", "");
-                    EffectManager.sendUIEffectVisibility(263, transportCon, true, "kill", false);
+                    EffectManager.sendUIEffectText(843, transportCon, true, "murderer", "");
+                    EffectManager.sendUIEffectText(843, transportCon, true, "body", "");
+                    EffectManager.sendUIEffectText(843, transportCon, true, "victim", "");
+                    EffectManager.sendUIEffectVisibility(843, transportCon, true, "kill", false);
                 }
                 else
                 {
-                    EffectManager.sendUIEffectText(263, transportCon, true, $"murderer{id - 1}", "");
-                    EffectManager.sendUIEffectText(263, transportCon, true, $"body{id - 1}", "");
-                    EffectManager.sendUIEffectText(263, transportCon, true, $"victim{id - 1}", "");
-                    EffectManager.sendUIEffectVisibility(263, transportCon, true, $"kill{id - 1}", false);
+                    EffectManager.sendUIEffectText(843, transportCon, true, $"murderer{id - 1}", "");
+                    EffectManager.sendUIEffectText(843, transportCon, true, $"body{id - 1}", "");
+                    EffectManager.sendUIEffectText(843, transportCon, true, $"victim{id - 1}", "");
+                    EffectManager.sendUIEffectVisibility(843, transportCon, true, $"kill{id - 1}", false);
                 }
             }
             liste[id - 1] = 0;
@@ -74,6 +74,10 @@ namespace gitankillfeed
         private void tellPlayer(UnturnedPlayer player, EDeathCause cause, ELimb limb, Steamworks.CSteamID murderer)
         {
             UnturnedPlayer murdererPlayer = UnturnedPlayer.FromCSteamID(murderer);
+            if(murdererPlayer == null)
+            {
+                return;
+            }
             nombreUi += 1;
             if (nombreUi > 6)
             {
@@ -86,19 +90,19 @@ namespace gitankillfeed
             {
                 if (FreeId == 1)
                 {
-                    EffectManager.sendUIEffectText(263, transportCon, true, "murderer", murdererPlayer.CharacterName.ToString());
-                    EffectManager.sendUIEffectText(263, transportCon, true, "body", limb.ToString());
-                    EffectManager.sendUIEffectText(263, transportCon, true, "victim", player.CharacterName.ToString());
-                    EffectManager.sendUIEffectVisibility(263, transportCon, true, "kill", true);
-                    EffectManager.sendUIEffectVisibility(263, transportCon, true, "text", true);
+                    EffectManager.sendUIEffectText(843, transportCon, true, "murderer", murdererPlayer.CharacterName.ToString());
+                    EffectManager.sendUIEffectText(843, transportCon, true, "body", limb.ToString());
+                    EffectManager.sendUIEffectText(843, transportCon, true, "victim", player.CharacterName.ToString());
+                    EffectManager.sendUIEffectVisibility(843, transportCon, true, "kill", true);
+                    EffectManager.sendUIEffectVisibility(843, transportCon, true, "text", true);
                 }
                 else
                 {
-                    EffectManager.sendUIEffectText(263, transportCon, true, $"murderer{FreeId - 1}", murdererPlayer.CharacterName.ToString());
-                    EffectManager.sendUIEffectText(263, transportCon, true, $"body{FreeId - 1}", limb.ToString());
-                    EffectManager.sendUIEffectText(263, transportCon, true, $"victim{FreeId - 1}", player.CharacterName.ToString());
-                    EffectManager.sendUIEffectVisibility(263, transportCon, true, $"kill{FreeId - 1}", true);
-                    EffectManager.sendUIEffectVisibility(263, transportCon, true, "text", true);
+                    EffectManager.sendUIEffectText(843, transportCon, true, $"murderer{FreeId - 1}", murdererPlayer.CharacterName.ToString());
+                    EffectManager.sendUIEffectText(843, transportCon, true, $"body{FreeId - 1}", limb.ToString());
+                    EffectManager.sendUIEffectText(843, transportCon, true, $"victim{FreeId - 1}", player.CharacterName.ToString());
+                    EffectManager.sendUIEffectVisibility(843, transportCon, true, $"kill{FreeId - 1}", true);
+                    EffectManager.sendUIEffectVisibility(843, transportCon, true, "text", true);
                 }
             }
             StartCoroutine(HideUIDelayed(FreeId));
