@@ -60,6 +60,7 @@ namespace gitankillfeed
                     EffectManager.sendUIEffectText(843, transportCon, true, "body", "");
                     EffectManager.sendUIEffectText(843, transportCon, true, "victim", "");
                     EffectManager.sendUIEffectVisibility(843, transportCon, true, "kill", false);
+                    EffectManager.sendUIEffectVisibility(843, transportCon, true, "zombie", false);
                 }
                 else
                 {
@@ -67,16 +68,22 @@ namespace gitankillfeed
                     EffectManager.sendUIEffectText(843, transportCon, true, $"body{id - 1}", "");
                     EffectManager.sendUIEffectText(843, transportCon, true, $"victim{id - 1}", "");
                     EffectManager.sendUIEffectVisibility(843, transportCon, true, $"kill{id - 1}", false);
+                    EffectManager.sendUIEffectVisibility(843, transportCon, true, $"zombie{id - 1}", false);
                 }
             }
             liste[id - 1] = 0;
         }
         private void tellPlayer(UnturnedPlayer player, EDeathCause cause, ELimb limb, Steamworks.CSteamID murderer)
         {
-            UnturnedPlayer murdererPlayer = UnturnedPlayer.FromCSteamID(murderer);
-            if(murdererPlayer == null)
-            {
-                return;
+            UnturnedPlayer murdererPlayer;
+            string characterName;
+            try {
+                murdererPlayer = UnturnedPlayer.FromCSteamID(murderer);
+                characterName = murdererPlayer.CharacterName.ToString();
+            }
+            catch {
+                murdererPlayer = null;
+                characterName = null;
             }
             nombreUi += 1;
             if (nombreUi > 6)
@@ -90,18 +97,40 @@ namespace gitankillfeed
             {
                 if (FreeId == 1)
                 {
-                    EffectManager.sendUIEffectText(843, transportCon, true, "murderer", murdererPlayer.CharacterName.ToString());
+                    if(characterName != null)
+                    {
+                        EffectManager.sendUIEffectText(843, transportCon, true, "murderer", characterName);
+                        EffectManager.sendUIEffectVisibility(843, transportCon, true, "kill", true);
+                        EffectManager.sendUIEffectVisibility(843, transportCon, true, "zombie", false);
+                    }
+                    else
+                    {
+                        EffectManager.sendUIEffectText(843, transportCon, true, "murderer", "MOB");
+                        EffectManager.sendUIEffectVisibility(843, transportCon, true, "kill", false);
+                        EffectManager.sendUIEffectVisibility(843, transportCon, true, "zombie", true);
+                    }               
                     EffectManager.sendUIEffectText(843, transportCon, true, "body", limb.ToString());
                     EffectManager.sendUIEffectText(843, transportCon, true, "victim", player.CharacterName.ToString());
-                    EffectManager.sendUIEffectVisibility(843, transportCon, true, "kill", true);
+                    
                     EffectManager.sendUIEffectVisibility(843, transportCon, true, "text", true);
                 }
                 else
                 {
-                    EffectManager.sendUIEffectText(843, transportCon, true, $"murderer{FreeId - 1}", murdererPlayer.CharacterName.ToString());
+                    if (characterName != null)
+                    {
+                        EffectManager.sendUIEffectText(843, transportCon, true, $"murderer{FreeId - 1}",characterName);
+                        EffectManager.sendUIEffectVisibility(843, transportCon, true, $"kill{FreeId - 1}", true);
+                        EffectManager.sendUIEffectVisibility(843, transportCon, true, $"zombie{FreeId - 1}", false);
+                    }
+                    else
+                    {
+                        EffectManager.sendUIEffectText(843, transportCon, true, $"murderer{FreeId - 1}", "MOB");
+                        EffectManager.sendUIEffectVisibility(843, transportCon, true, $"kill{FreeId - 1}", false);
+                        EffectManager.sendUIEffectVisibility(843, transportCon, true, $"zombie{FreeId - 1}", true);
+                    }        
                     EffectManager.sendUIEffectText(843, transportCon, true, $"body{FreeId - 1}", limb.ToString());
                     EffectManager.sendUIEffectText(843, transportCon, true, $"victim{FreeId - 1}", player.CharacterName.ToString());
-                    EffectManager.sendUIEffectVisibility(843, transportCon, true, $"kill{FreeId - 1}", true);
+                    
                     EffectManager.sendUIEffectVisibility(843, transportCon, true, "text", true);
                 }
             }
