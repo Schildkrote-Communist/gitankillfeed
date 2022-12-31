@@ -76,10 +76,11 @@ namespace gitankillfeed
         private void tellPlayer(UnturnedPlayer player, EDeathCause cause, ELimb limb, Steamworks.CSteamID murderer)
         {
             UnturnedPlayer murdererPlayer;
+            string configColor = Configuration.Instance.LinesColor;
             string characterName;
             try {
                 murdererPlayer = UnturnedPlayer.FromCSteamID(murderer);
-                characterName = murdererPlayer.CharacterName.ToString();
+                characterName = $"<color={configColor}>" + murdererPlayer.CharacterName.ToString() + $" [{murdererPlayer.Player.life.health} HP]" + "</color>";
             }
             catch {
                 murdererPlayer = null;
@@ -91,7 +92,6 @@ namespace gitankillfeed
                 nombreUi = 1;
             }
             int FreeId = liste.FindIndex(x => x == 0) + 1;
-            Rocket.Core.Logging.Logger.Log("FreeId : " + FreeId.ToString());
             liste[FreeId - 1] = 1;
             foreach (var transportCon in Provider.EnumerateClients())
             {
@@ -105,12 +105,12 @@ namespace gitankillfeed
                     }
                     else
                     {
-                        EffectManager.sendUIEffectText(843, transportCon, true, "murderer", "MOB");
+                        EffectManager.sendUIEffectText(843, transportCon, true, "murderer", "");
                         EffectManager.sendUIEffectVisibility(843, transportCon, true, "kill", false);
                         EffectManager.sendUIEffectVisibility(843, transportCon, true, "zombie", true);
                     }               
-                    EffectManager.sendUIEffectText(843, transportCon, true, "body", limb.ToString());
-                    EffectManager.sendUIEffectText(843, transportCon, true, "victim", player.CharacterName.ToString());
+                    EffectManager.sendUIEffectText(843, transportCon, true, "body", $"<color={configColor}>" + limb.ToString() + "</color>");
+                    EffectManager.sendUIEffectText(843, transportCon, true, "victim", $"<color={configColor}>" + player.CharacterName.ToString() + "</color>");
                     
                     EffectManager.sendUIEffectVisibility(843, transportCon, true, "text", true);
                 }
@@ -118,18 +118,18 @@ namespace gitankillfeed
                 {
                     if (characterName != null)
                     {
-                        EffectManager.sendUIEffectText(843, transportCon, true, $"murderer{FreeId - 1}",characterName);
+                        EffectManager.sendUIEffectText(843, transportCon, true, $"murderer{FreeId - 1}", characterName);
                         EffectManager.sendUIEffectVisibility(843, transportCon, true, $"kill{FreeId - 1}", true);
                         EffectManager.sendUIEffectVisibility(843, transportCon, true, $"zombie{FreeId - 1}", false);
                     }
                     else
                     {
-                        EffectManager.sendUIEffectText(843, transportCon, true, $"murderer{FreeId - 1}", "MOB");
+                        EffectManager.sendUIEffectText(843, transportCon, true, $"murderer{FreeId - 1}", "");
                         EffectManager.sendUIEffectVisibility(843, transportCon, true, $"kill{FreeId - 1}", false);
                         EffectManager.sendUIEffectVisibility(843, transportCon, true, $"zombie{FreeId - 1}", true);
                     }        
-                    EffectManager.sendUIEffectText(843, transportCon, true, $"body{FreeId - 1}", limb.ToString());
-                    EffectManager.sendUIEffectText(843, transportCon, true, $"victim{FreeId - 1}", player.CharacterName.ToString());
+                    EffectManager.sendUIEffectText(843, transportCon, true, $"body{FreeId - 1}", $"<color={configColor}>" + limb.ToString() + "</color>");
+                    EffectManager.sendUIEffectText(843, transportCon, true, $"victim{FreeId - 1}", $"<color={configColor}>" + player.CharacterName.ToString() + "</color>");
                     
                     EffectManager.sendUIEffectVisibility(843, transportCon, true, "text", true);
                 }
